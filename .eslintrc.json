@@ -1,3 +1,75 @@
 {
-  "extends": "next/core-web-vitals"
+	"env": {
+		"browser": true,
+		"es6": true
+	},
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"ecmaFeatures": {
+			"tsx": true
+		},
+		"ecmaVersion": "latest",
+		"ecmaType": "module",
+		"tsconfigRootDir": "__dirname",
+		"sourceType": "module"
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		},
+		"import/parsers": {
+			"@typescript-eslint/parser": [".ts", ".tsx"]
+		}
+	},
+	"plugins": ["@typescript-eslint/eslint-plugin", "prettier", "prefer-arrow"],
+	"extends": [
+		"next/babel",
+		"next/core-web-vitals",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:eslint-comments/recommended",
+		"plugin:promise/recommended",
+		"plugin:unicorn/recommended",
+		"prettier/react",
+		"prettier/@typescript-eslint",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:import/typescript",
+		"plugin:sonarjs/recommended",
+		"prettier"
+	],
+	"rules": {
+		"react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
+		"@typescript-eslint/explicit-module-boundary-types": [
+			"warn",
+			{
+				"allowTypedFunctionExpressions": true
+			}
+		],
+		"@typescript-eslint/no-unsafe-assignment": "warn",
+		"@typescript-eslint/explicit-function-return-type": [
+			"warn",
+			{
+				"allowExpressions": true,
+				"allowDirectConstAssertionInArrowFunctions": true
+			}
+		],
+		"@typescript-eslint/no-unused-vars": "warn",
+		"@typescript-eslint/explicit-member-accessibility": ["error"],
+		"@typescript-eslint/method-signature-style": ["error", "method"],
+		"react/prop-types": "off",
+		"react/jsx-props-no-spreading": "off",
+		"prettier/prettier": [
+			"warn",
+			{
+				"endOfLine": "auto",
+				"usePrettierrc": true
+			}
+		],
+		"implicit-arrow-linebreak": "warn",
+		"newline-after-var": ["warn", "always"],
+		"newline-before-return": "error"
+	}
 }
