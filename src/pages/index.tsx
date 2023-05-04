@@ -1,10 +1,11 @@
 import Head from "next/head";
+import { SBody, STitle } from "@/styles/components/Home";
 
 export default function Home() {
 	return (
 		<>
 			<Head>
-				<title>Template Next.js Malkavianson</title>
+				<title>Home</title>
 				<meta
 					name="description"
 					content="Next.js"
@@ -19,10 +20,8 @@ export default function Home() {
 				/>
 			</Head>
 			<main>
-				<div className="MainHome">
-					<h1 className="title">this is the main home page.</h1>
-					<p className="text">This text is in the home page.</p>
-				</div>
+				<STitle>This page is painted with styled component</STitle>
+				<SBody>A styled component</SBody>
 			</main>
 		</>
 	);
