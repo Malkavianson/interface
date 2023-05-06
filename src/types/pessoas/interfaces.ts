@@ -11,3 +11,9 @@ export interface IPessoaData {
 	cpf?: string;
 	rg?: string;
 }
+
+export interface IUsuarioData {
+	email: string;
+	senha: string;
+	role: string;
+}

@@ -1,5 +1,5 @@
 import { InternalId } from "../api";
-import { IPessoaData } from "./interfaces";
+import { IPessoaData, IUsuarioData } from "./interfaces";
 
 export class Pessoa extends InternalId {
 	protected _nome: string | undefined;
@@ -128,7 +128,7 @@ export class Usuario extends Pessoa {
 	protected _senha: string;
 	protected _role: string;
 
-	constructor({ id, email, senha, role }: Usuario) {
+	constructor(id: string, { email, senha, role }: IUsuarioData) {
 		super(id, {});
 		this._email = email;
 		this._senha = senha;
@@ -157,6 +157,11 @@ export class Usuario extends Pessoa {
 	}
 }
 
-// export class Administrador extends Pessoa {}
-// export class Cliente extends Pessoa {}
-// export class Editor extends Pessoa {}
+const dataTeste: IUsuarioData = {
+	email: "test@test.com",
+	role: "Administrator",
+	senha: "1234abc",
+};
+const teste = new Usuario("teste", dataTeste);
+
+console.log(teste)
