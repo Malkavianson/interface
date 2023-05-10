@@ -1,4 +1,4 @@
-export interface IPessoaData {
+export interface IPessoa {
 	nome?: string;
 	dataNascimento?: Date;
 	logradouro?: string;
@@ -12,7 +12,7 @@ export interface IPessoaData {
 	rg?: string;
 }
 
-export interface IUsuarioData {
+export interface IUsuario {
 	email: string;
 	senha: string;
 	role: string;

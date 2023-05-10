@@ -1,5 +1,5 @@
 import { InternalId } from "../api";
-import { IPessoaData, IUsuarioData } from "./interfaces";
+import { IPessoa, IUsuario } from "./interfaces";
 
 export class Pessoa extends InternalId {
 	protected _nome: string | undefined;
@@ -15,7 +15,6 @@ export class Pessoa extends InternalId {
 	protected _rg: string | undefined;
 
 	constructor(
-		id: string,
 		{
 			nome,
 			dataNascimento,
@@ -28,9 +27,10 @@ export class Pessoa extends InternalId {
 			pais,
 			cpf,
 			rg,
-		}: IPessoaData,
+		}: Partial<IPessoa>,
+		id?: string,
 	) {
-		super(id, "Pessoa");
+		super("Pessoa", id ? id : undefined);
 		this._nome = nome;
 		this._dataNascimento = dataNascimento;
 		this._logradouro = logradouro;
@@ -128,8 +128,12 @@ export class Usuario extends Pessoa {
 	protected _senha: string;
 	protected _role: string;
 
-	constructor(id: string, { email, senha, role }: IUsuarioData) {
-		super(id, {});
+	constructor(
+		{ email, senha, role }: IUsuario,
+		id?: string,
+		pessoa?: Partial<IPessoa>,
+	) {
+		super(pessoa ? pessoa : {}, id ? id : undefined);
 		this._email = email;
 		this._senha = senha;
 		this._role = role;
@@ -157,11 +161,11 @@ export class Usuario extends Pessoa {
 	}
 }
 
-const dataTeste: IUsuarioData = {
-	email: "test@test.com",
-	role: "Administrator",
-	senha: "1234abc",
-};
-const teste = new Usuario("teste", dataTeste);
+// const dataTeste: IUsuarioData = {
+// 	email: "test@test.com",
+// 	role: "Administrator",
+// 	senha: "1234abc",
+// };
+// const teste = new Usuario("teste", dataTeste);
 
-console.log(teste)
+// console.log(teste)
