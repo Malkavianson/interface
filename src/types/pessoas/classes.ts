@@ -4,6 +4,9 @@ import { IPessoa, IUsuario } from "./interfaces";
 export class Pessoa extends InternalId {
 	protected _nome: string | undefined;
 	protected _dataNascimento: Date | undefined;
+	protected _telefone: string | undefined;
+	protected _profissao: string | undefined;
+	protected _estadoCivil:	string | undefined;
 	protected _logradouro: string | undefined;
 	protected _numero: string | undefined;
 	protected _cep: string | undefined;
@@ -15,33 +18,24 @@ export class Pessoa extends InternalId {
 	protected _rg: string | undefined;
 
 	constructor(
-		{
-			nome,
-			dataNascimento,
-			logradouro,
-			numero,
-			cep,
-			bairro,
-			cidade,
-			estado,
-			pais,
-			cpf,
-			rg,
-		}: Partial<IPessoa>,
+		data: Partial<IPessoa>,
 		id?: string,
 	) {
 		super("Pessoa", id ? id : undefined);
-		this._nome = nome;
-		this._dataNascimento = dataNascimento;
-		this._logradouro = logradouro;
-		this._numero = numero;
-		this._cep = cep;
-		this._bairro = bairro;
-		this._cidade = cidade;
-		this._estado = estado;
-		this._pais = pais;
-		this._cpf = cpf;
-		this._rg = rg;
+		this._nome = data.nome;
+		this._dataNascimento = data.dataNascimento;
+		this._telefone = data.telefone;
+		this._profissao = data.profissao;
+		this._estadoCivil = data.estadoCivil;
+		this._logradouro = data.logradouro;
+		this._numero = data.numero;
+		this._cep = data.cep;
+		this._bairro = data.bairro;
+		this._cidade = data.cidade;
+		this._estado = data.estado;
+		this._pais = data.pais;
+		this._cpf = data.cpf;
+		this._rg = data.rg;
 	}
 
 	get nome(): string | undefined {
