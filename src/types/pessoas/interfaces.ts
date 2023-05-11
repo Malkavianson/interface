@@ -1,6 +1,18 @@
-export interface IPessoa {
+export interface IUsuario {
+	email: string;
+	senha: string;
+	role: string;
+}
+
+export interface IPessoa extends Partial<IDocumentos>, Partial<IEndereço> {
 	nome?: string;
 	dataNascimento?: Date;
+	telefone?: string;
+	profissao?: string;
+	estadoCivil?: string;
+}
+
+export interface IEndereço {
 	logradouro?: string;
 	numero?: string;
 	cep?: string;
@@ -8,12 +20,9 @@ export interface IPessoa {
 	cidade?: string;
 	estado?: string;
 	pais?: string;
-	cpf?: string;
-	rg?: string;
 }
 
-export interface IUsuario {
-	email: string;
-	senha: string;
-	role: string;
+export interface IDocumentos {
+	cpf?: string;
+	rg?: string;
 }
