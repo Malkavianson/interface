@@ -25,4 +25,6 @@ export interface IEndereço {
 export interface IDocumentos {
 	cpf?: string;
 	rg?: string;
+	cnpj?: string;
+	inscEst?: string;
 }

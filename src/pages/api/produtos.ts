@@ -1,4 +1,5 @@
 import { prisma } from "@/server";
+import { IProduto } from "@/types/produtos";
 import { NextApiRequest, NextApiResponse } from "next";
 
 // import swaggerUi from "swagger-ui-express";
@@ -20,8 +21,16 @@ export default async function handler(
 ) {
 	if (req.method === "GET") {
 		try {
-			const products = await prisma.product.findMany();
-			res.status(200).json(products);
+			// if (req.query !== undefined) {
+			// 	const id: string = req.query.id;
+			// 	const produto = await prisma.produto.findUnique({
+			// 		where: { id },
+			// 	})
+			// 	res.status(200).json(produto);
+			// } else {
+			const produtos = await prisma.produto.findMany();
+			res.status(200).json(produtos);
+			// }
 		} catch (error) {
 			res.status(500).json({ error: "Erro ao obter os produtos." });
 		}
@@ -30,16 +39,15 @@ export default async function handler(
 	// Rota POST para criar um novo produto
 	if (req.method === "POST") {
 		try {
-			const { name, price } = req.body;
+			const data: IProduto = req.body;
 
-			const createdProduct = await prisma.product.create({
+			const criarProduto = await prisma.produto.create({
 				data: {
-					name,
-					price,
-				},
+					referencia: data.referencia,
+				}
 			});
 
-			res.status(201).json(createdProduct);
+			res.status(201).json(criarProduto);
 		} catch (error) {
 			res.status(500).json({ error: "Erro ao criar o produto." });
 		}
@@ -48,17 +56,16 @@ export default async function handler(
 	// Rota PATCH para atualizar um produto existente
 	if (req.method === "PATCH") {
 		try {
-			const { id, name, price } = req.body;
+			const data: IProduto = req.body;
 
-			const updatedProduct = await prisma.product.update({
-				where: { id },
+			const produtoAtualizado = await prisma.produto.update({
+				where: { id: data.id },
 				data: {
-					name,
-					price,
-				},
+					referencia: data.referencia,
+				}
 			});
 
-			res.status(200).json(updatedProduct);
+			res.status(200).json(produtoAtualizado);
 		} catch (error) {
 			res.status(500).json({ error: "Erro ao atualizar o produto." });
 		}
@@ -67,10 +74,10 @@ export default async function handler(
 	if (req.method === "DELETE") {
 		const { id } = req.body;
 		try {
-			const products = await prisma.product.delete({
+			const produtos = await prisma.produto.delete({
 				where: { id },
 			});
-			res.status(200).json(products);
+			res.status(200).json(produtos);
 		} catch (error) {
 			res.status(500).json({ error: "Erro ao obter os produtos." });
 		}

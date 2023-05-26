@@ -12,98 +12,113 @@ generator erd {
   output   = "../db.pdf"
 }
 
-model Users {
-  id        String     @id @default(uuid())
-  name      String
-  email     String     @unique
-  password  String
-  cpf       String     @unique
-  isAdmin   Boolean    @default(false) @map("is_admin")
-  favorites Favorite[]
-  orders    Order[]
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+model Usuario {
+  id             String     @id @default(uuid())
+  email          String     @unique
+  senha          String
+  role           String     @map("role")
+  nome           String?
+  dataNascimento String?    @map("data_nascimento")
+  estadoCivil    String?    @map("estado_civil")
+  profissao      String?
+  telefone       String?    @unique
+  cpf            String?    @unique
+  rg             String?    @unique
+  cnpj           String?    @unique
+  inscEst        String?    @unique @map("insc_est")
+  logradouro     String?
+  numero         String?
+  cep            String?
+  bairro         String?
+  cidade         String?
+  estado         String?
+  pais           String?
+  favoritos      Favorito[]
+  pedidos        Pedido[]
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
 
-  @@map("users")
+  @@map("usuario")
 }
 
 model Produto {
-  id              String           @id @unique @default(uuid())
-  referencia      String           @unique
-  descricao       String?
-  disponibilidade DateTime?
-  especie         String?
-  genero          String?
-  imagens         String[]
-  nome            String?
-  portador        String?
-  porte           String?
-  preco           Int?
-  status          String?
-  visibilidade    String?
-  tipo            String?
-  Favorite        Favorite[]
-  OrderToProduct  OrderToProduct[]
-  Category        Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  categoryId      String?
-  createdAt       DateTime?        @default(now()) @map("created_at")
-  updatedAt       DateTime?        @updatedAt @map("updated_at")
+  id               String            @id @unique @default(uuid())
+  referencia       String            @unique
+  descricao        String?
+  disponibilidade  DateTime?
+  especie          String?
+  genero           String?
+  imagens          String[]
+  nome             String?
+  portador         String?
+  porte            String?
+  preco            Int?
+  status           String?
+  visibilidade     String?
+  tipo             String?
+  categoriaId      String?           @map("categoria_id")
+  Categoria        Categoria?        @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  Favoritos        Favorito[]
+  PedidosDeProduto PedidoDeProduto[]
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime?         @updatedAt @map("updated_at")
 
-  @@map("produtos")
+  @@map("produto")
 }
 
-model Arrival {
+model Referencia {
   id        String   @id @default(uuid())
-  number    Int      @unique
+  posicao   Int      @unique
+  pedidos   Pedido[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  orders    Order[]
 
-  @@map("arrival")
+  @@map("chegada")
 }
 
-model Category {
+model Categoria {
   id        String    @id @default(uuid())
-  name      String    @unique
+  nome      String    @unique
   produtos  Produto[]
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
 
-  @@map("category")
+  @@map("categoria")
 }
 
-model Favorite {
-  id                  String   @id @default(uuid())
-  createdAt           DateTime @default(now()) @map("created_at")
-  user                Users    @relation(fields: [userId], references: [id], onDelete: NoAction)
-  userId              String   @map("user_id")
-  produto             Produto  @relation(fields: [referenciaDoProduto], references: [referencia], onDelete: Cascade)
-  referenciaDoProduto String   @map("referencia_do_produto")
+model Favorito {
+  id        String   @id @default(uuid())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: NoAction)
+  usuarioId String   @map("usuario_id")
+  produto   Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  produtoId String   @map("produto_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  @@unique([userId, referenciaDoProduto])
+  @@unique([usuarioId, produtoId])
   @@map("favorito")
 }
 
-model Order {
-  id            String           @id @default(uuid())
-  createdAt     DateTime         @default(now()) @map("created_at")
-  arrival       Arrival?         @relation(fields: [arrivalNumber], references: [number], onDelete: SetNull)
-  arrivalNumber Int?             @map("arrival_number")
-  user          Users?           @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId        String?          @map("user_id")
-  produtos      OrderToProduct[]
+model Pedido {
+  id           String            @id @default(uuid())
+  status       String?
+  referencia   Referencia?       @relation(fields: [referenciaId], references: [id], onDelete: SetNull)
+  referenciaId String?           @map("referencia_id")
+  usuario      Usuario?          @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+  usuarioId    String?           @map("usuario_id")
+  produtos     PedidoDeProduto[]
+  createdAt    DateTime          @default(now()) @map("created_at")
 
-  @@map("order")
+  @@map("pedido")
 }
 
-model OrderToProduct {
-  id                  String   @id @default(uuid())
-  createdAt           DateTime @default(now()) @map("created_at")
-  produto             Produto  @relation(fields: [referenciaDoProduto], references: [referencia], onDelete: Cascade)
-  referenciaDoProduto String   @map("referencia_do_produto")
-  order               Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  orderId             String?  @map("order_id")
-  quantity            Int
+model PedidoDeProduto {
+  id         String   @id @default(uuid())
+  quantidade Int
+  produto    Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  produtoId  String   @map("produto_id")
+  pedido     Pedido?  @relation(fields: [pedidoId], references: [id], onDelete: SetNull)
+  pedidoId   String?  @map("pedido_id")
+  createdAt  DateTime @default(now()) @map("created_at")
 
-  @@map("order_to_product")
+  @@map("pedido_de_produto")
 }
